@@ -16,6 +16,9 @@ import {
   ModalBody,
   ModalHeader,
   Row,
+  Toast,
+  ToastBody,
+  ToastHeader
 } from "reactstrap";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -143,6 +146,7 @@ const Calender = (props) => {
   const [projects, setProjects] = useState([]);
   const [collections, setCollections] = useState([]);
   const [files, setFiles] = useState([]);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   useEffect(() => {
     dispatch(onGetCategories());
@@ -327,6 +331,13 @@ const Calender = (props) => {
           },
         }
       );
+      if (response.status === 'pending') {
+        toggleCategory();
+        setShowSuccessToast(true);
+        setTimeout(() => {
+          setShowSuccessToast(false);
+        }, 2000);
+      }
       console.log("upload file",response);
     } catch (error) {
       console.error(error);
@@ -440,37 +451,14 @@ const Calender = (props) => {
         <Container fluid={true}>
           <Breadcrumbs title="VisionAnalytics.AI" breadcrumbItem="Project Management" />
           <Row className="mb-4">
-            {/* <Col xl={3}>
-              <Card className="h-100">
-                <CardBody>
-                  <Link to="/project">
-                    <Button
-                      outline={true}
-                      color="light" className="btn font-16 text-primary waves-effect waves-light w-100 mb-3" >
-                      <i className="mdi mdi-folder-outline me-2"></i>Projects
-                    </Button>
-                  </Link>
-                  <Link to="/project">
-                    <Button
-                      outline={true}
-                      color="light" className="btn font-16 text-primary waves-effect waves-light w-100 mb-3" >
-                      <i className="mdi mdi-cube-outline me-2"></i>Collections
-                    </Button>
-                  </Link>
-                  <Link to="/project">
-                    <Button
-                      outline={true}
-                      color="light" className="btn font-16 text-primary waves-effect waves-light w-100 mb-3" >
-                      <i className="mdi mdi-file-outline me-2"></i>Files
-                    </Button>
-                  </Link>
-                </CardBody>
-              </Card>
-            </Col> */}
-
             <Col xl={12}>
               <Card className="mb-0">
                 <CardBody>
+                  {showSuccessToast && (
+                    <div className="alert alert-warning" role="alert">
+                      Uploading files is being processed, please wait...
+                    </div>
+                  )}
                   <Row className="mt-3">
                     <Col sm={12} md={8}>
                       <div className="search-box ms-2">
@@ -479,7 +467,6 @@ const Calender = (props) => {
                             type="text"
                             className="form-control border-0"
                             placeholder="Search Projects..."
-                            // onChange={(e) => setSearchTerm(e.target.value)}
                           />
                           <span className="search-box-icon">
                             <i className="bx bx-search-alt search-icon" />
@@ -511,7 +498,6 @@ const Calender = (props) => {
                     </Col>
                   </Row>
 
-                  
                   <Row className="mt-4">
                     <Col sm={12}>
                       <h4 className="page-title">Projects</h4>
@@ -609,12 +595,7 @@ const Calender = (props) => {
                       ))}
                     </Row>
                   )}
-                  {/* <Button
-                    color="primary" className="btn font-16 btn-primary waves-effect waves-light w-100" onClick={toggleCategory}>
-                    Create New Event
-                  </Button> */}
 
-                  {/* New/Edit event modal */}
                   <Modal isOpen={modal} className={props.className}>
                     <ModalHeader toggle={toggle} tag="h4">
                       {!!isEdit ? "Edit Event" : "Add Event"}
@@ -635,7 +616,6 @@ const Calender = (props) => {
                             <Input
                               name="title"
                               type="text"
-                              // value={event ? event.title : ""}
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
                               value={validation.values.title || ""}
@@ -660,7 +640,6 @@ const Calender = (props) => {
                             <Input
                               type="select"
                               name="category"
-                              // value={event ? event.category : "bg-primary"}
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
                               value={validation.values.category || ""}
@@ -738,7 +717,7 @@ const Calender = (props) => {
                       <Row form>
                         <Col className="col-12 mb-3">
                           <Label className="form-label">
-                            Select Project
+                            Project
                           </Label>
                           <Input
                             type="select"
@@ -754,7 +733,7 @@ const Calender = (props) => {
                         </Col>
                         <Col className="col-12 mb-3">
                           <Label className="form-label">
-                            Select Collection
+                            Collection
                           </Label>
                           <Input
                             type="select"
@@ -777,7 +756,6 @@ const Calender = (props) => {
                             onChange={(e) => {
                               const file = e.target.files[0];
                               setFiles(file);
-                              // handle file selection
                             }}
                           />
                         </Col>

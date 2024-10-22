@@ -49,8 +49,8 @@ import Error404 from "../Pages/Utility/Error404-Page";
 import Error500 from "../Pages/Utility/Error500-Page";
 
 // Import UIElement Pages
-// import UiAlerts from "../Pages/UiElements/UiAlerts";
-// import UiBadge from "../Pages/UiElements/UiBadge";
+import UiAlerts from "../Pages/UiElements/UiAlerts";
+import UiBadge from "../Pages/UiElements/UiBadge";
 // import UiBreadcrumb from "../Pages/UiElements/UiBreadcrumb";
 // import UiButtons from "../Pages/UiElements/UiButtons";
 // import UiCards from "../Pages/UiElements/UiCards";
@@ -145,8 +145,8 @@ const authProtectedRoutes = [
   // { path: "/pages-pricing", component: <Pricing /> },
 
   // UiElements Pages
-  // { path: "/ui-alerts", component: <UiAlerts /> },
-  // { path: "/ui-badge", component: <UiBadge /> },
+  { path: "/ui-alerts", component: <UiAlerts /> },
+  { path: "/ui-badge", component: <UiBadge /> },
   // { path: "/ui-breadcrumb", component: <UiBreadcrumb /> },
   // { path: "/ui-buttons", component: <UiButtons /> },
   // { path: "/ui-cards", component: <UiCards /> },

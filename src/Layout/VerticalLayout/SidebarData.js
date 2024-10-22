@@ -23,7 +23,7 @@ const SidebarData = [
                 { sublabel: "Social Media Analytics", link: "/social-media-analytics" },
                 { sublabel: "News Analytics", link: "/news-analytics" },
         ],
-    }
+    },
     // {
     //     label: "Email",
     //     icon: "mdi mdi-email-outline",
@@ -65,12 +65,12 @@ const SidebarData = [
     //     label: "Components",
     //     isMainMenu: true,
     // },
-    // {
-    //     label: "UI Elements",
-    //     icon: "mdi mdi-briefcase-variant-outline",
-    //     subItem: [
-    //         { sublabel: "Alerts", link: "/ui-alerts" },
-    //         { sublabel: "Badge", link: "/ui-badge" },
+    {
+        label: "UI Elements",
+        icon: "mdi mdi-briefcase-variant-outline",
+        subItem: [
+            { sublabel: "Alerts", link: "/ui-alerts" },
+            { sublabel: "Badge", link: "/ui-badge" },
     //         { sublabel: "Breadcrumb", link: "/ui-breadcrumb" },
     //         { sublabel: "Buttons", link: "/ui-buttons" },
     //         { sublabel: "Cards", link: "/ui-cards" },
@@ -92,8 +92,8 @@ const SidebarData = [
     //         { sublabel: "Video", link: "/ui-video" },
     //         { sublabel: "Popovers & Tooltips", link: "/ui-popovers" },
     //         { sublabel: "Rating", link: "/ui-rating" },
-    //     ],
-    // },
+        ],
+    },
     // {
     //     label: "Forms",
     //     icon: "ri-eraser-fill",
