@@ -11,7 +11,7 @@ const UserPanel = ({ totalProjects, totalCollections, totalDocuments }) => {
   return (
     <React.Fragment>
       <Row>
-        <Col xl={3} sm={6}>
+        <Col xl={4} sm={6}>
           <Card>
             <CardBody>
               <div className="d-flex text-muted">
@@ -24,10 +24,10 @@ const UserPanel = ({ totalProjects, totalCollections, totalDocuments }) => {
                 <div className="flex-grow-1 overflow-hidden">
                   <Row>
                     <Col>
-                      <p className="mb-1">Total Projects</p>
+                      <p className="mb-1" style={{ fontSize: '1.2rem'}}>Total Projects</p>
                     </Col>
-                    <Col className="d-flex align-items-center justify-content-left">
-                      <h5 className="mb-0">{totalProjects}</h5>
+                    <Col className="d-flex align-items-center justify-content-center">
+                      <h5 className="mb-0" style={{ fontSize: '1.8rem', fontWeight: 'bold'}}>{totalProjects}</h5>
                     </Col>
                   </Row>
                 </div>
@@ -36,7 +36,7 @@ const UserPanel = ({ totalProjects, totalCollections, totalDocuments }) => {
           </Card>
         </Col>
 
-        <Col xl={3} sm={6}>
+        <Col xl={4} sm={6}>
           {/* <Card>
             <CardBody>
               <div className="d-flex">
@@ -75,10 +75,10 @@ const UserPanel = ({ totalProjects, totalCollections, totalDocuments }) => {
                 <div className="flex-grow-1 overflow-hidden">
                   <Row>
                     <Col>
-                      <p className="mb-1">Total Collections</p>
+                      <p className="mb-1" style={{ fontSize: '1.2rem'}}>Total Collections</p>
                     </Col>
-                    <Col className="d-flex align-items-center justify-content-left">
-                      <h5 className="mb-0">{totalCollections}</h5>
+                    <Col className="d-flex align-items-center justify-content-center">
+                      <h5 className="mb-0" style={{ fontSize: '1.8rem', fontWeight: 'bold'}}>{totalCollections}</h5>
                     </Col>
                   </Row>
                 </div>
@@ -87,7 +87,7 @@ const UserPanel = ({ totalProjects, totalCollections, totalDocuments }) => {
           </Card>
         </Col>
 
-        <Col xl={3} sm={6}>
+        <Col xl={4} sm={6}>
           {/* <Card>
             <CardBody>
               <div className="d-flex text-muted">
@@ -126,10 +126,10 @@ const UserPanel = ({ totalProjects, totalCollections, totalDocuments }) => {
                 <div className="flex-grow-1 overflow-hidden">
                   <Row>
                     <Col>
-                      <p className="mb-1">Total Documents</p>
+                      <p className="mb-1" style={{ fontSize: '1.2rem'}}>Total Documents</p>
                     </Col>
-                    <Col className="d-flex align-items-center justify-content-left">
-                      <h5 className="mb-0">{totalDocuments}</h5>
+                    <Col className="d-flex align-items-center justify-content-center">
+                      <h5 className="mb-0" style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{totalDocuments}</h5>
                     </Col>
                   </Row>
                 </div>

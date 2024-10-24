@@ -48,7 +48,7 @@ const OverView = () => {
                                 {OverViewData.map((item, key) => (<Col md={4} key={key} className="border-end">
                                     <div>
                                         <p className="mb-2"><i className={"mdi mdi-circle font-size-12 me-1 text-" + item.color}></i> {item.title}</p>
-                                        <h5 className="font-size-16 mb-0">$ {item.count} <span className="text-success font-size-12"><i className="mdi mdi-menu-up font-size-14 me-1"></i>{item.percentage} %</span></h5>
+                                        <h5 className="font-size-16 mb-0"> {item.count} <span className="text-success font-size-12"><i className="mdi mdi-menu-up font-size-14 me-1"></i>{item.percentage} %</span></h5>
                                     </div>
                                 </Col>))}
                             </Row>

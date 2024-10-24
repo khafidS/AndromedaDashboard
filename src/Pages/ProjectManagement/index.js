@@ -134,6 +134,7 @@ const Calender = (props) => {
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [modalcategory, setModalcategory] = useState(false);
+  const [modalccollection, setModalccolection] = useState(false);
   const [responseProject, setResponseProject] = useState([]);
   const [responseCollection, setResponseCollection] = useState([]);
   const [responseDocument, setResponseDocument] = useState([]);
@@ -145,8 +146,14 @@ const Calender = (props) => {
 
   const [projects, setProjects] = useState([]);
   const [collections, setCollections] = useState([]);
+  const [cproject, setCProject] = useState(null);
+  const [ccollection, setCCollection] = useState(null);
   const [files, setFiles] = useState([]);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  // const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [selectedCollectionId, setSelectedCollectionId] = useState(null);
 
   useEffect(() => {
     dispatch(onGetCategories());
@@ -306,6 +313,26 @@ const Calender = (props) => {
       }
   };
 
+  const toggleCreateCollection = async () => {
+    setModalccolection(!modalccollection);
+    setCCollection(null);
+    try {
+      const response = await axios.get(
+        "https://api.jp-tok.discovery.watson.cloud.ibm.com/instances/8bbebb41-0767-4f62-9c03-12624208fea5/v2/projects?version=2023-03-31",
+        {
+          auth: {
+            username: "apikey",
+            password: "0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9",
+          },
+        }
+      );
+      setProjects(response.projects);
+      console.log(response.projects);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleUploadFile = async (event) => {
     console.log("upload file",files);
     if(!files){
@@ -324,18 +351,50 @@ const Calender = (props) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            auth: {
-              username: "apikey",
-              password: "0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9",
-            },
+            "Authorization": `Basic ${btoa('apikey:0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9')}`,
           },
         }
       );
       if (response.status === 'pending') {
         toggleCategory();
-        setShowSuccessToast(true);
+        setToastMessage('Uploading file...');
         setTimeout(() => {
-          setShowSuccessToast(false);
+          setToastMessage('');
+        }, 2000);
+      }
+      console.log("upload file",response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCreateCollection = async (event) => {
+    console.log("create collection",ccollection);
+    if(!ccollection){
+      return;
+    }
+    const collectionName = ccollection;
+    const formData = new FormData();
+    formData.append("name", collectionName);
+    const projectValue = document.querySelector('select[name="project"]').value;
+    console.log(projectValue);
+    try {
+      const response = await axios.post(
+        "https://api.jp-tok.discovery.watson.cloud.ibm.com/instances/8bbebb41-0767-4f62-9c03-12624208fea5/v2/projects/"+ projectValue +"/collections?version=2023-03-31",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Basic ${btoa('apikey:0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9')}`,
+          },
+        }
+      );
+      console.log("response status",response.status)
+      if (response.status = 201) {
+        toggleCreateCollection();
+        setToastMessage(`Collection ${collectionName} is created`);
+        setTimeout(() => {
+          setToastMessage('');
         }, 2000);
       }
       console.log("upload file",response);
@@ -370,6 +429,21 @@ const Calender = (props) => {
     setSelectedDay(modifiedData);
     toggle();
   };
+
+  // Handle project and collection button click
+  const handleProjectClick = (projectId) => {
+    setSelectedProjectId(projectId);
+    getCollections(projectId);
+    setDocumentDetails([]);
+    setResponseDocument([]);
+  };
+
+  const handleCollectionClick = (collectionId) => {
+    setSelectedCollectionId(collectionId);
+      if(projectIds !== null) {
+        getDocuments(projectIds,collectionId);
+      }
+    }
 
   /**
    * Handling click on event on calendar
@@ -454,9 +528,9 @@ const Calender = (props) => {
             <Col xl={12}>
               <Card className="mb-0">
                 <CardBody>
-                  {showSuccessToast && (
+                  {toastMessage && (
                     <div className="alert alert-warning" role="alert">
-                      Uploading files is being processed, please wait...
+                      {toastMessage}
                     </div>
                   )}
                   <Row className="mt-3">
@@ -480,9 +554,9 @@ const Calender = (props) => {
                           <Button
                             color="primary"
                             className="btn font-16 btn-primary waves-effect waves-light w-100"
-                            onClick={toggleCategory}
+                            onClick={toggleCreateCollection}
                           >
-                            <i className="mdi mdi-plus me-1" /> Create
+                            <i className="mdi mdi-plus me-1" /> Create Collection
                           </Button>
                         </Col>
                         <Col>
@@ -512,17 +586,17 @@ const Calender = (props) => {
                   ) : (
                     <Row> 
                       {responseProject.map((project, index) => (
-                        <Col key={index} className="col-xxl-3 col-md-3 col-12">
+                        <Col key={index} className="col-xxl-3 col-md-6 col-12 mb-2 mr-2">
                           <Button
                             outline={true}
                             color="light"
-                            className="w-100"
-                            onClick={() => {
-                              getCollections(project.project_id);
-                            }}
+                            className={`w-100 d-flex align-items-center text-start`}
+                            onClick={() => handleProjectClick(project.project_id)}
                           >
                             <i className="mdi mdi-folder font-size-24 me-2" />
+                            <span style={{ fontWeight: selectedProjectId === project.project_id ? 'bold' : 'normal' }}>
                             {project.name}
+                            </span>
                           </Button>
                         </Col>                      
                       ))}
@@ -538,25 +612,23 @@ const Calender = (props) => {
                   {responseCollection && responseCollection.length === 0 ? (
                     <Row className="text-center mt-4">
                       <Col sm={12}>
-                        <p className="page-title">No Collection Found</p>
+                        <p className="page-title">No Collections Found</p>
                       </Col>
                     </Row>
                   ) : (
                     <Row> 
                       {responseCollection.map((collection, index) => (
-                        <Col key={index} className="col-xxl-3 col-md-3 col-12">
+                        <Col key={index} className="col-xxl-3 col-md-6 col-12 mb-2 mr-2">
                           <Button
                             outline={true}
                             color="light"
-                            className="w-100"
-                            onClick={() => {
-                              if(projectIds !== null) {
-                                getDocuments(projectIds,collection.collection_id);
-                              }
-                            }}
+                            className="w-100 d-flex align-items-center text-start"
+                            onClick={() => handleCollectionClick(collection.collection_id)}
                           >
                             <i className="mdi mdi-folder font-size-24 me-2" />
+                            <span style={{ fontWeight: selectedCollectionId === collection.collection_id ? 'bold' : 'normal' }}>
                             {collection.name}
+                            </span>
                           </Button>
                         </Col>                      
                       ))}
@@ -571,17 +643,17 @@ const Calender = (props) => {
                   {responseDocument && responseDocument.length === 0 ? (
                     <Row className="text-center mt-4">
                       <Col sm={12}>
-                        <p className="page-title">No Document Found</p>
+                        <p className="page-title">No Documents Found</p>
                       </Col>
                     </Row>
                   ) : (
                     <Row> 
                       {responseDocument.map((document, index) => (
-                        <Col key={index} className="col-xxl-3 col-md-3 col-12">
+                        <Col key={index} className="col-xxl-3 col-md-6 col-12 mb-2 mr-2">
                           <Button
                             outline={true}
                             color="light"
-                            className="w-100"
+                            className="w-100 d-flex align-items-center text-start"
                           >
                             <i className="mdi mdi-folder font-size-24 me-2" />
                             {documentDetails[document.document_id] ? (
@@ -704,7 +776,7 @@ const Calender = (props) => {
                     className={props.className}
                   >
                   <ModalHeader toggle={toggleCategory} tag="h4">
-                    Upload a File
+                    Upload File to Collection
                   </ModalHeader>
                   <ModalBody>
                     <Form
@@ -782,6 +854,75 @@ const Calender = (props) => {
                     </Form>
                   </ModalBody>
                 </Modal>
+
+                <Modal
+                    isOpen={modalccollection}
+                    toggle={toggleCreateCollection}
+                    className={props.className}
+                  >
+                  <ModalHeader toggle={toggleCreateCollection} tag="h4">
+                    Create Collection
+                  </ModalHeader>
+                  <ModalBody>
+                    <Form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleCreateCollection(e);
+                        return false;
+                      }}
+                    >
+                      <Row form>
+                        <Col className="col-12 mb-3">
+                          <Label className="form-label">
+                            Project
+                          </Label>
+                          <Input
+                            type="select"
+                            className="form-control"
+                            name="project"
+                            onChange={(e) => toggleCollections(e.target.value)}
+                          >
+                            <option value="">Select Project</option>
+                            {projects.map((project) => (
+                              <option value={project.project_id}>{project.name}</option>
+                            ))}
+                          </Input>
+                        </Col>
+                        <Col className="col-12 mb-3">
+                          <Label className="form-label">
+                            Collection
+                          </Label>
+                          <Input
+                            type="text"
+                            className="form-control border-1"
+                            placeholder="Collection Name"
+                            onChange={(e) => setCCollection(e.target.value)}
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <div className="text-end">
+                            <button
+                              type="button"
+                              className="btn btn-light me-2"
+                              onClick={toggleCreateCollection}
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="submit"
+                              className="btn btn-success save-event"
+                            >
+                              Create
+                            </button>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form>
+                  </ModalBody>
+                </Modal>
+
                 </CardBody>
               </Card>
             </Col>

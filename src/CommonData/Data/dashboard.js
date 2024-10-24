@@ -93,22 +93,22 @@ const OrderStatusData = [
 const OverViewData = [
     {
         id: 1,
-        title: "Expenses",
+        title: "Reports Generated",
         count: "8,524",
         percentage: "1.2",
         color: "primary"
     },
     {
         id: 2,
-        title: "Maintenance",
-        count: "8,524",
+        title: "Queries",
+        count: "10,392",
         percentage: "2.0",
         color: "light"
     },
     {
         id: 3,
-        title: "Profit",
-        count: "8,524",
+        title: "Tokens Used",
+        count: "100,293",
         percentage: "0.4",
         color: "danger"
     },

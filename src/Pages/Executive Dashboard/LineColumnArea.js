@@ -5,17 +5,17 @@ import ReactApexChart from "react-apexcharts";
 const LineColumnAreaData = {
   series: [
     {
-      name: "Expenses",
+      name: "Documents",
       type: "column",
       data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 18],
     },
     {
-      name: "Maintenance",
+      name: "Queries",
       type: "area",
       data: [44, 55, 41, 42, 22, 43, 21, 41, 56, 27, 43, 27],
     },
     {
-      name: "Profit",
+      name: "Tokens Used",
       type: "line",
       data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
     },
