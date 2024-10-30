@@ -649,15 +649,17 @@ const Calender = (props) => {
                   ) : (
                     <Row> 
                       {responseDocument.map((document, index) => (
-                        <Col key={index} className="col-xxl-3 col-md-6 col-12 mb-2 mr-2">
+                        <Col key={index} className="col-xxl-12 col-md-6 col-12 mb-2 mr-2">
                           <Button
                             outline={true}
                             color="light"
                             className="w-100 d-flex align-items-center text-start"
                           >
-                            <i className="mdi mdi-folder font-size-24 me-2" />
+                            <i className="mdi mdi-file font-size-24 me-2" />
                             {documentDetails[document.document_id] ? (
-                              <span>{documentDetails[document.document_id].filename}</span>
+                              <span>{documentDetails[document.document_id].filename.length > 100
+                                ? `${documentDetails[document.document_id].filename.slice(0, 100)}...`
+                                : documentDetails[document.document_id].filename}</span>
                             ) : (
                               <span></span>
                             )}
