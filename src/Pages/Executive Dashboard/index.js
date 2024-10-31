@@ -31,11 +31,11 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://api.jp-tok.discovery.watson.cloud.ibm.com/instances/8bbebb41-0767-4f62-9c03-12624208fea5/v2/projects?version=2023-03-31",
+          "https://api.us-south.discovery.watson.cloud.ibm.com/instances/d2597f84-6531-46f4-b891-9df3a3b6833b/v2/projects?version=2023-03-31",
           {
             auth: {
               username: "apikey",
-              password: "0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9",
+              password: "vVWuqHBVfbLxuHCwpY-oV-Ho3jzciOA4U0J7aMoJTc7t",
             },
           }
         );
@@ -93,11 +93,11 @@ const Dashboard = () => {
       if(projectId !== null) {
         setProjectIds(projectId);
         const response = await axios.get(
-          "https://api.jp-tok.discovery.watson.cloud.ibm.com/instances/8bbebb41-0767-4f62-9c03-12624208fea5/v2/projects/"+ projectId +"/collections?version=2023-03-31",
+          "https://api.us-south.discovery.watson.cloud.ibm.com/instances/d2597f84-6531-46f4-b891-9df3a3b6833b/v2/projects/"+ projectId +"/collections?version=2023-03-31",
           {
             auth: {
               username: "apikey",
-              password: "0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9",
+              password: "vVWuqHBVfbLxuHCwpY-oV-Ho3jzciOA4U0J7aMoJTc7t",
             },
           }
         );
@@ -112,11 +112,11 @@ const Dashboard = () => {
     try {
       if (projectId !== null || collectionId !== null) {
         const response = await axios.get(
-          "https://api.jp-tok.discovery.watson.cloud.ibm.com/instances/8bbebb41-0767-4f62-9c03-12624208fea5/v2/projects/"+ projectId +"/collections/"+ collectionId +"/documents?status=available&version=2023-03-31",
+          "https://api.us-south.discovery.watson.cloud.ibm.com/instances/d2597f84-6531-46f4-b891-9df3a3b6833b/v2/projects/"+ projectId +"/collections/"+ collectionId +"/documents?status=available&version=2023-03-31",
           {
             auth: {
               username: "apikey",
-              password: "0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9",
+              password: "vVWuqHBVfbLxuHCwpY-oV-Ho3jzciOA4U0J7aMoJTc7t",
             },
           }
         );
@@ -131,11 +131,11 @@ const Dashboard = () => {
   try {
     if (projectId && collectionId && documentId) {
       const detailsResponse = await axios.get(
-        `https://api.jp-tok.discovery.watson.cloud.ibm.com/instances/8bbebb41-0767-4f62-9c03-12624208fea5/v2/projects/${projectId}/collections/${collectionId}/documents/${documentId}?version=2023-03-31`,
+        `https://api.us-south.discovery.watson.cloud.ibm.com/instances/d2597f84-6531-46f4-b891-9df3a3b6833b/v2/projects/${projectId}/collections/${collectionId}/documents/${documentId}?version=2023-03-31`,
         {
           auth: {
             username: "apikey",
-            password: "0-SQ0M0BwfrdTZjW2JPzh2l7hkVMdBDq3vLaDtR99Pv9",
+            password: "vVWuqHBVfbLxuHCwpY-oV-Ho3jzciOA4U0J7aMoJTc7t",
           },
         }
       );
