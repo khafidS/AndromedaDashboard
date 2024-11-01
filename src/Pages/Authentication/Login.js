@@ -112,15 +112,15 @@ const Login = props => {
                   <div className="text-center">
                     <Link to="/">
                       <img
-                        src={logodark}
+                        src={logolight}
                         alt=""
-                        height="24"
+                        height="70"
                         className="auth-logo logo-dark mx-auto"
                       />
                       <img
-                        src={logolight}
+                        src={logodark}
                         alt=""
-                        height="24"
+                        height="70"
                         className="auth-logo logo-light mx-auto"
                       />
                     </Link>

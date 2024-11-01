@@ -71,19 +71,19 @@ const Header = (props) => {
             <div className="navbar-brand-box text-center">
               <Link to="/" className="logo logo-dark">
                 <span className="logo-sm">
-                  <img src={logoSm} alt="logo-sm-dark" height="22" />
+                  <img src={logoSm} alt="logo-sm-dark" height="30" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoLight} alt="logo-dark" height="50" />
+                  <img src={logoLight} alt="logo-dark" height="70" />
                 </span>
               </Link>
 
               <Link to="/" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={logoSm} alt="logo-sm-light" height="22" />
+                  <img src={logoSm} alt="logo-sm-light" height="30" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoDark} alt="logo-light" height="50" />
+                  <img src={logoDark} alt="logo-light" height="70" />
                 </span>
               </Link>
             </div>

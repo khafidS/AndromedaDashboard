@@ -16,6 +16,9 @@ import NewsAnalytics from "../Pages/News Analytics/News-Analytics";
 //Social Media Analytics
 import SocialMediaAnalytics from "../Pages/SocialMediaAnalytics/Social-Media-Analytics";
 
+//Reports
+import Reports from "../Pages/Reports/Reports";
+
 //IAM
 import IAM from "../Pages/IAM/IAM";
 
@@ -123,6 +126,9 @@ const authProtectedRoutes = [
 
   //Social Media Analytics
   { path: "/social-media-analytics", component: <SocialMediaAnalytics /> },
+
+  // Reports
+  { path: "/reports", component: <Reports /> },
 
   //IAM
   { path: "/iam", component: <IAM /> },

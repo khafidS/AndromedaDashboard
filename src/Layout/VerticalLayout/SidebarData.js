@@ -24,6 +24,12 @@ const SidebarData = [
                 { sublabel: "News Analytics", link: "/news-analytics" },
         ],
     },
+    {
+        label: "Reports",
+        icon: "mdi mdi-chart-box-outline",
+        isHasArrow: true,
+        url: "/reports",
+    },
     // {
     //     label: "Email",
     //     icon: "mdi mdi-email-outline",
