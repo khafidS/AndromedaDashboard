@@ -135,6 +135,7 @@ const Calender = (props) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [modalcategory, setModalcategory] = useState(false);
   const [modalccollection, setModalccolection] = useState(false);
+  const [modaldocument, setModalDocument] = useState(false);
   const [responseProject, setResponseProject] = useState([]);
   const [responseCollection, setResponseCollection] = useState([]);
   const [responseDocument, setResponseDocument] = useState([]);
@@ -154,6 +155,9 @@ const Calender = (props) => {
 
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [selectedCollectionId, setSelectedCollectionId] = useState(null);
+  const [selectedDocumentId, setSelectedDocumentId] = useState(null);
+
+  const [documentData, setDocumentData] = useState(null);
 
   useEffect(() => {
     dispatch(onGetCategories());
@@ -333,6 +337,21 @@ const Calender = (props) => {
     }
   };
 
+  const toggleDocument = async () => {
+    try {
+        const response = await axios.get(
+            `http://multipolarva.ibm.com:5000/api/doc_info_by_doc_id?doc_id=${selectedDocumentId}&project_id=${selectedProjectId}`
+        );
+        
+        // Set document data to state
+        setDocumentData(response.data);
+        console.log(response)
+        setModalDocument(!modaldocument);
+    } catch (error) {
+        console.error("Error fetching document data:", error);
+    }
+};
+
   const handleUploadFile = async (event) => {
     console.log("upload file",files);
     if(!files){
@@ -444,6 +463,16 @@ const Calender = (props) => {
         getDocuments(projectIds,collectionId);
       }
     }
+
+  const handleDocumentClick = (documentId) => {
+    setSelectedDocumentId(documentId);
+    console.log(selectedDocumentId)
+    setDocumentData(null);
+    toggleDocument();
+    //   if(projectIds !== null) {
+    //     getDocuments(projectIds,collectionId);
+    // }
+  }
 
   /**
    * Handling click on event on calendar
@@ -654,6 +683,7 @@ const Calender = (props) => {
                             outline={true}
                             color="light"
                             className="w-100 d-flex align-items-center text-start"
+                            onClick={() => handleDocumentClick(document.document_id)}
                           >
                             <i className="mdi mdi-file font-size-24 me-2" />
                             {documentDetails[document.document_id] ? (
@@ -924,6 +954,43 @@ const Calender = (props) => {
                     </Form>
                   </ModalBody>
                 </Modal>
+
+                <Modal 
+                isOpen={modaldocument}
+                toggle={toggleDocument}
+                className={props.className}
+                >
+                  <ModalHeader 
+                  toggle={toggleDocument} 
+                  tag="h4"
+                  >
+                  Document Information
+                  </ModalHeader>
+                    <ModalBody>
+                        {documentData ? (
+                            <div>
+                                <p>{documentData.document_id}</p>
+                                <p>{documentData.ingest_datetime}</p>
+                                <p>{documentData.url}</p>
+                                <h5>Title</h5>
+                                <p>{documentData.title}</p>
+                                <h5>Text</h5>
+                                <p>{documentData.text}</p>
+                            </div>
+                        ) : (
+                            <p>Loading...</p>  // Display this if data is still loading
+                        )}
+                        <div className="text-end">
+                            <button 
+                            type="button" 
+                            className="btn btn-light me-2" 
+                            onClick={toggleDocument}
+                            >
+                                Close
+                            </button>
+                        </div>
+                      </ModalBody>
+                  </Modal>
 
                 </CardBody>
               </Card>
