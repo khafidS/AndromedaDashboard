@@ -136,6 +136,7 @@ const Calender = (props) => {
   const [modalcategory, setModalcategory] = useState(false);
   const [modalccollection, setModalccolection] = useState(false);
   const [modaldocument, setModalDocument] = useState(false);
+  const [modalanalyze, setModalAnalyze] = useState(false);
   const [responseProject, setResponseProject] = useState([]);
   const [responseCollection, setResponseCollection] = useState([]);
   const [responseDocument, setResponseDocument] = useState([]);
@@ -158,6 +159,7 @@ const Calender = (props) => {
   const [selectedDocumentId, setSelectedDocumentId] = useState(null);
 
   const [documentData, setDocumentData] = useState(null);
+  const [analyzeData, setAnalyzeData] = useState(null);
 
   useEffect(() => {
     dispatch(onGetCategories());
@@ -339,6 +341,7 @@ const Calender = (props) => {
 
   const toggleDocument = async () => {
     try {
+        setModalDocument(!modaldocument);
         const response = await axios.get(
             `http://multipolarva.ibm.com:5000/api/doc_info_by_doc_id?doc_id=${selectedDocumentId}&project_id=${selectedProjectId}`
         );
@@ -346,11 +349,28 @@ const Calender = (props) => {
         // Set document data to state
         setDocumentData(response.data);
         console.log(response)
-        setModalDocument(!modaldocument);
+        
     } catch (error) {
         console.error("Error fetching document data:", error);
     }
-};
+  };
+
+  const toggleAnalyze = async () => {
+    try {
+        console.log(selectedDocumentId);
+        setModalAnalyze(!modalanalyze);
+        const response = await axios.get(
+            `http://multipolarva.ibm.com:5000/api/extract_news_by_doc_id?doc_id=${selectedDocumentId}&project_id=${selectedProjectId}`
+        );
+        
+        // Set document data to state
+        setAnalyzeData(response.data);
+        console.log(response)
+        
+    } catch (error) {
+        console.error("Error fetching document insights:", error);
+    }
+  };
 
   const handleUploadFile = async (event) => {
     console.log("upload file",files);
@@ -968,15 +988,24 @@ const Calender = (props) => {
                   </ModalHeader>
                     <ModalBody>
                         {documentData ? (
-                            <div>
-                                <p>{documentData.document_id}</p>
-                                <p>{documentData.ingest_datetime}</p>
-                                <p>{documentData.url}</p>
-                                <h5>Title</h5>
-                                <p>{documentData.title}</p>
-                                <h5>Text</h5>
-                                <p>{documentData.text}</p>
+                            <div style={{ border: "1px solid #ddd", padding: "16px", borderRadius: "8px", fontFamily: "Arial, sans-serif", color: "#333", marginBottom: "16px"}}>
+                            <p><strong>Document ID:</strong> {documentData.document_id}</p>
+                            <p><strong>Ingest Date:</strong> {documentData.ingest_datetime}</p>
+                            <p>
+                                <strong>URL:</strong> 
+                                <a href={documentData.url} target="_blank" rel="noopener noreferrer" style={{ color: "#0073e6" }}>
+                                    {documentData.url}
+                                </a>
+                            </p>
+                            
+                            <h5 style={{ marginTop: "16px", fontSize: "1.1em", color: "#333" }}>Title</h5>
+                            <p style={{ margin: 0 }}>{documentData.title}</p>
+                            
+                            <h5 style={{ marginTop: "16px", fontSize: "1.1em", color: "#333" }}>Text</h5>
+                            <div style={{ maxHeight: "200px", overflowY: "auto", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}>
+                                <p style={{ margin: 0 }}>{documentData.text}</p>
                             </div>
+                        </div>                        
                         ) : (
                             <p>Loading...</p>  // Display this if data is still loading
                         )}
@@ -985,6 +1014,45 @@ const Calender = (props) => {
                             type="button" 
                             className="btn btn-light me-2" 
                             onClick={toggleDocument}
+                            >
+                                Close
+                            </button>
+                            <button 
+                            type="button" 
+                            className="btn btn-dark me-2" 
+                            onClick={toggleAnalyze}
+                            >
+                                Analyze
+                            </button>
+                        </div>
+                      </ModalBody>
+                  </Modal>
+
+                <Modal 
+                isOpen={modalanalyze}
+                toggle={toggleAnalyze}
+                className={props.className}
+                >
+                  <ModalHeader 
+                  toggle={toggleAnalyze} 
+                  tag="h4"
+                  >
+                  Document Summary
+                  </ModalHeader>
+                    <ModalBody>
+                        {analyzeData ? (
+                          <div 
+                          style={{ border: "1px solid #ddd", padding: "16px", borderRadius: "8px", fontFamily: "Arial, sans-serif", color: "#333", marginBottom: "16px" }}
+                          dangerouslySetInnerHTML={{ __html: analyzeData.analysis }} 
+                      />                       
+                        ) : (
+                            <p>Loading Analysis...</p>  // Display this if data is still loading
+                        )}
+                        <div className="text-end">
+                            <button 
+                            type="button" 
+                            className="btn btn-light me-2" 
+                            onClick={toggleAnalyze}
                             >
                                 Close
                             </button>
